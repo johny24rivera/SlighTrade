@@ -1,6 +1,6 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
+import 'package:slightrade/elements.dart';
+import 'package:slightrade/signup.dart';
 import 'myHomePage.dart';
 
 class LoginPage extends StatelessWidget {
@@ -33,6 +33,9 @@ class _BodyState extends State<Body> {
   void click() {
     this.user = userController.text;
     this.password = passwordController.text;
+    // hash password (MD5)
+    //Check Credentials
+
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -41,54 +44,28 @@ class _BodyState extends State<Body> {
     );
   }
 
+  void signup() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => SignupPage())
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    List<Widget> elements = <Widget>[
+      generateTextField(userController, "Username or email", Icon(Icons.person)),
+      generateTextField(passwordController, "password", Icon(Icons.lock), true),
+      generateButton(click),
+      generateLink(signup, "Don't have an account? Sign up here."),
+    ];
+
     return Align(
       alignment: Alignment.center,
       child: Padding(
         padding: EdgeInsets.all(10),
         child: Column(
-          children: <Widget>[
-            Padding( //UserName field
-              padding: EdgeInsets.all(10),
-              child: TextField(
-                controller: this.userController,
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.person),
-                  labelText: "Username or email",
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.black,
-                      width: 5,
-                      style: BorderStyle.solid
-                    )
-                  ),
-                ),
-              ),
-            ),
-            Padding( // Password Field
-              padding: EdgeInsets.all(10),
-              child: TextField(
-                controller: this.passwordController,
-                obscureText: true,
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.lock),
-                  labelText: "Password",
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.black,
-                      width: 5,
-                      style: BorderStyle.solid
-                    )
-                  ),
-                ),
-              ),
-            ),
-            ElevatedButton(
-              onPressed: click,
-              child: Text("Submit")
-            ),
-          ],
+          children: elements,
         )
       )
     );
