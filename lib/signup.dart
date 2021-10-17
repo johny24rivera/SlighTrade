@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:slightrade/login.dart';
 import 'package:slightrade/myHomePage.dart';
 import 'package:slightrade/elements.dart';
+import 'package:slightrade/user.dart';
 
 class SignupPage extends StatelessWidget {
   const SignupPage({ Key? key }) : super(key: key);
@@ -39,13 +42,18 @@ class _BodyState extends State<Body> {
     this.email = emailController.text;
     this.password = passwordController.text;
     this.confirmPassword = confirmPasswordController.text;
+
+    User member = new User(username, email, password);
+
+    String jsonMember = jsonEncode(member.toJson());
+
     // verify password == confirmPassword
     // store email, username & hashed password
 
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => MyHomePage(title: username)
+        builder: (context) => MyHomePage(title: jsonMember)
       )
     );
   }
