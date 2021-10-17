@@ -37,11 +37,23 @@ class _BodyState extends State<Body> {
   late String password;
   late String confirmPassword;
 
+  bool verifyUserData() {
+    // make sure username is not used
+    // make sure is not used
+    
+    if (password != confirmPassword){return false;}
+
+    return true;
+  }
+
   void click() {
     this.username = usernameController.text;
     this.email = emailController.text;
     this.password = passwordController.text;
     this.confirmPassword = confirmPasswordController.text;
+
+    bool valid = verifyUserData();
+    this.password = password;
 
     User member = new User(username, email, password);
 
