@@ -36,7 +36,7 @@ class _BodyState extends State<Body> {
     // hash password (MD5)
     //Check Credentials
 
-    Navigator.push(
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (context) => MyHomePage(title: user)
@@ -45,7 +45,7 @@ class _BodyState extends State<Body> {
   }
 
   void signup() {
-    Navigator.push(
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => SignupPage())
     );

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:slightrade/helpful-methods/formValidation.dart';
 import 'package:slightrade/login.dart';
 import 'package:slightrade/myHomePage.dart';
 import 'package:slightrade/elements.dart';
@@ -37,11 +38,27 @@ class _BodyState extends State<Body> {
   late String password;
   late String confirmPassword;
 
+  bool missingFields() {
+    if (username == '' || email == '' || password == '') {
+      return true;
+    }
+    return false;
+  }
+
   bool verifyUserData() {
     // make sure username is not used
-    // make sure is not used
-    
-    if (password != confirmPassword){return false;}
+    // make sure is not used;
+    // verify email is valid
+
+    if (missingFields()) {
+      generateAlert("Invalid Input", "There is a field missing.", context);
+      return false;
+    }
+
+    if (password != confirmPassword) {
+      generateAlert("Invalid Input", "Passwords do not match", context);
+      return false;
+    }
 
     return true;
   }
@@ -52,26 +69,23 @@ class _BodyState extends State<Body> {
     this.password = passwordController.text;
     this.confirmPassword = confirmPasswordController.text;
 
-    bool valid = verifyUserData();
-    this.password = password;
+    // Go to Home page if all information is correct
+    if (verifyUserData()) {
+      this.password = hashPassword(password);
+      User member = new User(username, email, password);
+      String jsonMember = jsonEncode(member.toJson());
 
-    User member = new User(username, email, password);
-
-    String jsonMember = jsonEncode(member.toJson());
-
-    // verify password == confirmPassword
-    // store email, username & hashed password
-
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => MyHomePage(title: jsonMember)
-      )
-    );
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => MyHomePage(title: "Home")
+        )
+      );
+    }
   }
 
   void login() {
-    Navigator.push(
+    Navigator.pushReplacement(
       context, 
       MaterialPageRoute(builder: (context) => LoginPage())
     );

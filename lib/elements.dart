@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 Padding generateTextField(TextEditingController controller, String label, Icon icon, [bool pass = false]) {
     return Padding(
@@ -39,4 +40,12 @@ Padding generateLink(void Function() click, String link) {
             child: Text(link),
           )
   );
+}
+
+void generateAlert(String title, String message, context){
+  Alert(
+    context: context,
+    title: title,
+    desc: message,
+  ).show();
 }
