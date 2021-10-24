@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
+import 'objects/user.dart';
+
 Padding generateTextField(TextEditingController controller, String label, Icon icon, [bool pass = false]) {
     return Padding(
       padding: EdgeInsets.all(20),
@@ -48,4 +50,23 @@ void generateAlert(String title, String message, context){
     title: title,
     desc: message,
   ).show();
+}
+
+Text generateText(String text, [Color color = Colors.black, FontWeight weight = FontWeight.normal]) {
+  return Text(text,
+    style: TextStyle(
+      color: color,
+      fontWeight: weight
+    )
+  );
+}
+
+User getPracticeUser() {
+  User user = new User.withoutWallet(
+    "goldcode_yt",
+    "Jonathan24rivera@gmail.com",
+    "Password",
+  );
+
+  return user;
 }
