@@ -66,7 +66,16 @@ main() {
     expect(fund.getInitialFunds(), initial);
   });
 
-  // test('test sell Stocks', () {
+  test('test sell Stocks', () {
+    double initial = 400;
+    double buy = 300;
+    double sell = 350;
+    double available = 400 - buy + sell;
+    Funds fund = new Funds.withInitial(initial);
+    fund.buyStocks(buy);
+    fund.sellStocks(sell);
 
-  // });
+    expect(fund.getFunds(), available);
+    expect(fund.getInitialFunds(), initial);
+  });
 }
