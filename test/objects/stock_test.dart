@@ -14,4 +14,8 @@ main() {
     expect(stock.getPurchasePrice(), purchasePrice);
     expect(stock.getEarnings(), 0);
   });
+
+  // test('test update method()',() {
+
+  // });
 }
