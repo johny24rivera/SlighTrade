@@ -16,31 +16,59 @@ class Stocks {
     '_followedStocks' : _followedStocks,
   };
 
-  double getValue() {
+  void buy(Stock stock) {
+    _ownedStocks.add(stock);
+  }
+
+  Future<double> sell(Stock stock) async {
+    _ownedStocks.remove(stock);
+    await stock.update();
+    return stock.getValue();
+  }
+
+  void follow(Stock stock) {
+    _followedStocks.add(stock);
+  }
+
+  void unfollow(Stock stock) {
+    _followedStocks.remove(stock);
+  }
+
+  Future<double> getValue() async {
     double value = 0;
-    for (int i = 0; i < _ownedStocks.length; i++) {
-      value += _ownedStocks[i].getValue();
+    for (int i = 0; i < _ownedStocks.length; i++)  {
+      double price = await _ownedStocks[i].getValue();
+      value += price;
     }
 
     return value;
   }
 
-  double getEarnings() {
+  Future<double> getEarnings() async {
     double value = 0;
     for (int i = 0; i < _ownedStocks.length; i++) {
-      value += _ownedStocks[i].getEarnings();
+      double price = await _ownedStocks[i].getEarnings();
+      value += price;
     }
 
     return value;
   }
 
-  void update() {
+  void update() async {
     for (int i = 0; i < _ownedStocks.length; i++) {
-      _ownedStocks[i].update();
+      await _ownedStocks[i].update();
     }
 
     for (int i = 0; i < _followedStocks.length; i++) {
-      _followedStocks[i].update();
+      await _followedStocks[i].update();
     }
+  }
+
+  List<Stock> getOwnedStocks() {
+    return _ownedStocks;
+  }
+
+  List<Stock> getFollowedStocks() {
+    return _followedStocks;
   }
 }

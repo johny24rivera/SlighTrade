@@ -24,6 +24,7 @@ Padding generateTextField(TextEditingController controller, String label, Icon i
             );
 }
 
+
 ElevatedButton generateButton(void Function() click) {
   return ElevatedButton(
     onPressed: click,

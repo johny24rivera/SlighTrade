@@ -11,6 +11,8 @@ class User extends Object {
     _wallet = new Wallet.empty();
   }
 
+  Wallet getWallet() {return _wallet;}
+
   Map<String,dynamic> toJson() => {
     '_username': _username,
     '_email' : _email,

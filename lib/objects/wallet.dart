@@ -1,7 +1,5 @@
-import 'dart:html';
-
-import 'package:flutter/cupertino.dart';
 import 'package:slightrade/objects/funds.dart';
+import 'package:slightrade/objects/stock.dart';
 import 'package:slightrade/objects/stocks.dart';
 
 class Wallet extends Object {
@@ -20,11 +18,33 @@ class Wallet extends Object {
   Wallet.empty() {
     this.funds = new Funds.empty();
     this.stocks = new Stocks();
+    this.portfolio = 0;
   }
 
-  update() {
+  void setFunds(Funds fund) => {this.funds = fund};
+
+  Future<double> getEarnings() async {
+    return await stocks.getEarnings();
+  }
+
+  Future<double> getPortfolio() async {
+    double fundPort = funds.getFunds();
+    double stockPort = await stocks.getValue();
+
+    return stockPort + fundPort;
+  }
+
+  List<Stock> getStocks() {
+    return stocks.getOwnedStocks();
+  }
+
+  List<Stock> getFollowedStocks() {
+    return stocks.getFollowedStocks();
+  }
+
+  update() async {
     stocks.update();
-    portfolio = this.funds.getFunds() + this.stocks.getValue();
+    portfolio = this.funds.getFunds() + await this.stocks.getValue();
   }
 
   Map<String,dynamic> toJson() => {

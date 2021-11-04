@@ -6,12 +6,15 @@ class Stock {
   late double _currentPrice;
   late double _purchasePrice;
   late int _quantity;
+  bool _changed = false;
 
   Stock(this._name, this._ticker, this._currentPrice, this._purchasePrice, this._quantity);
   Stock.withoutQuantity(this._name, this._ticker, this._currentPrice, this._purchasePrice);
   Stock.withoutCurrentPrice(this._name, this._ticker, this._purchasePrice, this._quantity) {
     this._currentPrice = this._purchasePrice;
   }
+  
+  get changed => _changed;
 
   String getName() {
     return _name;
@@ -21,22 +24,23 @@ class Stock {
     return _purchasePrice;
   }
 
-  double getValue() {
-    update();
+  Future<double> getValue() async {
+    await update();
     return _currentPrice;
   }
 
-  double getEarnings() {
-    update();
+  Future<double> getEarnings() async {
+    await update();
     return _quantity * (_currentPrice - _purchasePrice);
   }
 
-  void update() {
+  Future update() async {
     final yfin = YahooFin();
-    late StockQuote price;
     StockInfo info = yfin.getStockInfo(ticker: _ticker);
     yfin.getPrice(stockInfo: info)
-      .then((value) => price = value);
-    print(price.toString());
+      .then((value) {
+        _currentPrice = value.currentPrice!;
+        _changed = true;
+      });
   }
 }

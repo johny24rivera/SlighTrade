@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:slightrade/helpful-methods/formValidation.dart';
 import 'package:slightrade/login.dart';
 import 'package:slightrade/elements.dart';
-import 'package:slightrade/pages/homePage.dart';
+// import 'package:slightrade/pages/homePage.dart';
 import 'package:slightrade/objects/user.dart';
+import 'package:slightrade/pages/setup_pages/wallet_setup.dart';
 
 class SignupPage extends StatelessWidget {
   const SignupPage({ Key? key }) : super(key: key);
@@ -79,7 +80,8 @@ class _BodyState extends State<Body> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => HomePage()
+          builder: (context) => WalletPage(user: member)
+          // builder: (context) => HomePage()
         )
       );
     }

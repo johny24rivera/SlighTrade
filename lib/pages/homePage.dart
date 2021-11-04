@@ -1,12 +1,13 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:slightrade/elements.dart';
+import 'package:slightrade/objects/wallet.dart';
 
 import '../objects/user.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({ Key? key}) : super(key: key);
+  const HomePage({ Key? key, required this.user}) : super(key: key);
+
+  final User user;
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -24,7 +25,9 @@ class _HomePageState extends State<HomePage> {
             children: [
               Container( 
                 padding: EdgeInsets.all(20),
-                child: Earnings()
+                child: Earnings(
+                  wallet: widget.user.getWallet()
+                )
               ), //Earning or Loss Container
               Container(
 
@@ -37,30 +40,42 @@ class _HomePageState extends State<HomePage> {
 }
 
 class Earnings extends StatefulWidget {
-  const Earnings({ Key? key }) : super(key: key);
+  const Earnings({ Key? key, required this.wallet }) : super(key: key);
 
+  final Wallet wallet;
   @override
   _EarningsState createState() => _EarningsState();
 }
 
 class _EarningsState extends State<Earnings> {
   User user = getPracticeUser();
-  double _earning = 0;
-  double _portfolio = 0;
-  late Text _portfolioText;
-  late Text _earningText;
+  Text _portfolioText = Text("");
+  Text _earningText = Text("");
+  late double portfolio;
+  late double earnings;
 
-  void getTexts() {
+  @override
+  void initState() {
+    super.initState();
+    widget.wallet.getPortfolio()
+      .then((value) => portfolio = value);
+    widget.wallet.getEarnings()
+      .then((value) => earnings = value);
 
-    if (_earning < 0) {
-      _portfolioText = generateText(_portfolio.toString(), Colors.red);
-      _earningText = generateText(_earning.toString(), Colors.red);
-    } else if (_earning > 0) {
-      _portfolioText = generateText(_portfolio.toString(), Colors.green);
-      _earningText = generateText(_earning.toString(), Colors.green);
+    setState(() {});
+  }
+
+  Future<void> getTexts() async {
+
+    if (earnings < 0) {
+      _portfolioText = generateText(portfolio.toString(), Colors.red);
+      _earningText = generateText(earnings.toString(), Colors.red);
+    } else if (earnings > 0) {
+      _portfolioText = generateText(portfolio.toString(), Colors.green);
+      _earningText = generateText(earnings.toString(), Colors.green);
     } else {
-      _portfolioText = Text(_portfolio.toString());
-      _earningText = Text(_earning.toString());
+      _portfolioText = Text(portfolio.toString());
+      _earningText = Text(earnings.toString());
     }
   }
 
@@ -69,7 +84,7 @@ class _EarningsState extends State<Earnings> {
   Widget build(BuildContext context) {
     getTexts();
 
-    return Column(
+    return Column (
       children: [
         Row(
           children: [
