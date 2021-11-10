@@ -71,3 +71,23 @@ User getPracticeUser() {
 
   return user;
 }
+
+IconButton generateSearchIcon() {
+  return new IconButton(
+    icon: Icon(Icons.search),
+    tooltip: 'Search',
+    onPressed: () {
+
+    },
+  );
+}
+
+IconButton generateMenuButton() {
+  return new IconButton(
+    icon: Icon(Icons.menu),
+    tooltip: 'Menu',
+    onPressed: () {
+      
+    },
+  );
+}

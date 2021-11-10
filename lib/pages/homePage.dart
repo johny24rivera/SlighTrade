@@ -17,7 +17,9 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Home")
+        title: Text("Home"),
+        actions: <Widget>[generateSearchIcon()],
+        leading: generateMenuButton(),
       ),
       body:
         Center(
@@ -25,8 +27,20 @@ class _HomePageState extends State<HomePage> {
             children: [
               Container( 
                 padding: EdgeInsets.all(20),
-                child: Earnings(
-                  wallet: widget.user.getWallet()
+                child: FutureBuilder(
+                  future: Future.wait([
+                    widget.user.getWallet().getPortfolio(),
+                    widget.user.getWallet().getEarnings()
+                  ]),
+                  builder: (BuildContext context, AsyncSnapshot<List<double>> snapshot) {
+                    if (snapshot.data?[0] != null && snapshot.data?[1] != null) {
+                      return Earnings(wallet: widget.user.getWallet());
+                    } else {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                  },
                 )
               ), //Earning or Loss Container
               Container(
@@ -48,29 +62,22 @@ class Earnings extends StatefulWidget {
 }
 
 class _EarningsState extends State<Earnings> {
-  User user = getPracticeUser();
   Text _portfolioText = Text("");
   Text _earningText = Text("");
-  late double portfolio;
-  late double earnings;
+  double? portfolio;
+  double? earnings;
 
-  @override
-  void initState() {
-    super.initState();
-    widget.wallet.getPortfolio()
-      .then((value) => portfolio = value);
-    widget.wallet.getEarnings()
-      .then((value) => earnings = value);
+  void getTexts() {
+    portfolio = widget.wallet.portfolio;
+    earnings = widget.wallet.earnings;
 
-    setState(() {});
-  }
-
-  Future<void> getTexts() async {
-
-    if (earnings < 0) {
+    if (earnings == null) {
+      _portfolioText = Text(portfolio.toString());
+      _earningText = Text(earnings.toString());
+    } else if (earnings! < 0) {
       _portfolioText = generateText(portfolio.toString(), Colors.red);
       _earningText = generateText(earnings.toString(), Colors.red);
-    } else if (earnings > 0) {
+    } else if (earnings! > 0) {
       _portfolioText = generateText(portfolio.toString(), Colors.green);
       _earningText = generateText(earnings.toString(), Colors.green);
     } else {
