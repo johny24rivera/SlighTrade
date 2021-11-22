@@ -13,18 +13,24 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  TextEditingController searchController = new TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("Home"),
-        actions: <Widget>[generateSearchIcon()],
+        actions: <Widget>[],
         leading: generateMenuButton(),
       ),
       body:
         Center(
           child: Column(
             children: [
+              Container(
+                padding: EdgeInsets.all(20),
+                child: generateSearchBar(context),
+              ),
               Container( 
                 padding: EdgeInsets.all(20),
                 child: FutureBuilder(

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:slightrade/pages/stock.dart';
+import 'package:yahoofin/yahoofin.dart';
 
 import 'objects/user.dart';
 
@@ -72,12 +74,39 @@ User getPracticeUser() {
   return user;
 }
 
-IconButton generateSearchIcon() {
-  return new IconButton(
-    icon: Icon(Icons.search),
-    tooltip: 'Search',
-    onPressed: () {
+TextField generateSearchBar(BuildContext context) {
+  TextEditingController search = new TextEditingController();
 
+  return TextField(
+    controller: search,
+    decoration: InputDecoration(
+      prefixIcon: Icon(Icons.search),
+      contentPadding: const EdgeInsets.all(20),
+      isDense: true,
+      floatingLabelBehavior: FloatingLabelBehavior.never,
+      labelText: "Search...",
+      labelStyle: TextStyle(
+        color: Color(0xff5B5B5B),
+        fontSize: 17.0,
+        fontWeight: FontWeight.w500,
+      ),
+      alignLabelWithHint: true,
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(20.0),
+        borderSide: BorderSide(
+          color: Colors.black,
+          width: 5,
+          style: BorderStyle.solid
+        ),
+      ),
+    ),
+    onSubmitted: (search) {
+      final yfin = YahooFin();
+      StockInfo info = yfin.getStockInfo(ticker: search);
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => StockPage(info: info))
+      );
     },
   );
 }
