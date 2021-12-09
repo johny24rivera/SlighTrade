@@ -1,3 +1,4 @@
+import 'package:slightrade/objects/stock.dart';
 import 'package:slightrade/objects/wallet.dart';
 
 class User extends Object {
@@ -12,6 +13,10 @@ class User extends Object {
   }
 
   Wallet getWallet() {return _wallet;}
+
+  void buyStock(Stock stock) {
+    _wallet.buyStock(stock);
+  }
 
   Map<String,dynamic> toJson() => {
     '_username': _username,

@@ -46,36 +46,36 @@ main() {
     expect(fund.getInitialFunds(), total);
   });
 
-  test('test buyStocks()', () {
-    double initial = 12000;
-    double purchase = 1300;
-    double available = initial - purchase;
-    Funds fund = Funds.withInitial(initial);
-    fund.buyStocks(purchase);
+  // test('test buyStocks()', () {
+  //   double initial = 12000;
+  //   double purchase = 1300;
+  //   double available = initial - purchase;
+  //   Funds fund = Funds.withInitial(initial);
+  //   fund.buyStocks(purchase);
 
-    expect(fund.getInitialFunds(), initial);
-    expect(fund.getFunds(), available);
-  });
+  //   expect(fund.getInitialFunds(), initial);
+  //   expect(fund.getFunds(), available);
+  // });
 
-  test('overbuy in buyStocks', () {
-    double initial = 300;
-    double purchase = 400;
-    Funds fund = Funds.withInitial(initial);
-    expect(() => fund.buyStocks(purchase), throwsException);
-    expect(fund.getFunds(), initial);
-    expect(fund.getInitialFunds(), initial);
-  });
+  // test('overbuy in buyStocks', () {
+  //   double initial = 300;
+  //   double purchase = 400;
+  //   Funds fund = Funds.withInitial(initial);
+  //   expect(() => fund.buyStocks(purchase), throwsException);
+  //   expect(fund.getFunds(), initial);
+  //   expect(fund.getInitialFunds(), initial);
+  // });
 
-  test('test sell Stocks', () {
-    double initial = 400;
-    double buy = 300;
-    double sell = 350;
-    double available = 400 - buy + sell;
-    Funds fund = new Funds.withInitial(initial);
-    fund.buyStocks(buy);
-    fund.sellStocks(sell);
+  // test('test sell Stocks', () {
+  //   double initial = 400;
+  //   double buy = 300;
+  //   double sell = 350;
+  //   double available = 400 - buy + sell;
+  //   Funds fund = new Funds.withInitial(initial);
+  //   fund.buyStocks(buy);
+  //   fund.sellStocks(sell);
 
-    expect(fund.getFunds(), available);
-    expect(fund.getInitialFunds(), initial);
-  });
+  //   expect(fund.getFunds(), available);
+  //   expect(fund.getInitialFunds(), initial);
+  // });
 }

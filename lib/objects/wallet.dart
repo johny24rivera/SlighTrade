@@ -26,6 +26,10 @@ class Wallet extends Object {
 
   void setFunds(Funds fund) => {this.funds = fund};
 
+  double getAvailableFunds() {
+    return funds.getFunds();
+  }
+
   Future<double> getEarnings() async {
     this.earnings = await stocks.getEarnings();
     return earnings;
@@ -37,6 +41,11 @@ class Wallet extends Object {
     portfolio = stockPort + fundPort;
 
     return portfolio;
+  }
+
+  void buyStock(Stock stock){
+    funds.buyStocks(stock);
+    stocks.buy(stock);
   }
 
   List<Stock> getStocks() {

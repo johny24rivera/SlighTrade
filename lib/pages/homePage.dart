@@ -29,7 +29,7 @@ class _HomePageState extends State<HomePage> {
             children: [
               Container(
                 padding: EdgeInsets.all(20),
-                child: generateSearchBar(context),
+                child: generateSearchBar(context, widget.user),
               ),
               Container( 
                 padding: EdgeInsets.all(20),

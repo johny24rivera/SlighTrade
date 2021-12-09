@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:slightrade/pages/stock.dart';
 import 'package:yahoofin/yahoofin.dart';
+import 'package:flutter/services.dart';
 
 import 'objects/user.dart';
 
@@ -27,10 +28,24 @@ Padding generateTextField(TextEditingController controller, String label, Icon i
 }
 
 
-ElevatedButton generateButton(void Function() click) {
+ElevatedButton generateButton(void Function() click, [String message = "Submit"]) {
   return ElevatedButton(
     onPressed: click,
-    child: Text("Submit"),
+    child: Text(message),
+  );
+}
+
+Padding generateNumberField(TextEditingController controller) {
+  return Padding(
+    padding: EdgeInsets.all(20),
+    child: new TextField(
+      controller: controller,
+      decoration: new InputDecoration(labelText: "Enter your number"),
+      keyboardType: TextInputType.number,
+      inputFormatters: <TextInputFormatter> [
+        FilteringTextInputFormatter.digitsOnly
+      ], // Only numbers can be entered
+    ),
   );
 }
 
@@ -74,7 +89,7 @@ User getPracticeUser() {
   return user;
 }
 
-TextField generateSearchBar(BuildContext context) {
+TextField generateSearchBar(BuildContext context, User user) {
   TextEditingController search = new TextEditingController();
 
   return TextField(
@@ -105,7 +120,7 @@ TextField generateSearchBar(BuildContext context) {
       StockInfo info = yfin.getStockInfo(ticker: search);
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => StockPage(info: info))
+        MaterialPageRoute(builder: (context) => StockPage(info: info, user: user))
       );
     },
   );

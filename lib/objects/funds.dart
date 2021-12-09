@@ -1,3 +1,5 @@
+import 'package:slightrade/objects/stock.dart';
+
 class Funds {
   late double _initialFunds;
   late double _availableFunds;
@@ -32,7 +34,8 @@ class Funds {
     this._availableFunds += funds;
   }
 
-  void buyStocks(double purchasePrice) {
+  void buyStocks(Stock stock) {
+    double purchasePrice = stock.getPurchasePrice() * stock.quantity;
     assert(purchasePrice > 0);
     if (purchasePrice <= _availableFunds) {
       this._availableFunds -= purchasePrice;

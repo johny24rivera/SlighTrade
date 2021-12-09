@@ -15,6 +15,7 @@ class Stock {
   }
   
   get changed => _changed;
+  get quantity => _quantity;
 
   String getName() {
     return _name;
