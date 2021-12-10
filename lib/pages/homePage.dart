@@ -101,6 +101,12 @@ class _EarningsState extends State<Earnings> {
       children: [
         Row(
           children: [
+            Text("Available Funds: "),
+            Text(widget.wallet.getAvailableFunds().toString()),
+          ],
+        ),
+        Row(
+          children: [
             Text("Portfolio: "),
             _portfolioText,
           ],

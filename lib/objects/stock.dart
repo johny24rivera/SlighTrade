@@ -17,6 +17,8 @@ class Stock {
   get changed => _changed;
   get quantity => _quantity;
 
+  get ticker => _ticker;
+
   String getName() {
     return _name;
   }
@@ -27,7 +29,7 @@ class Stock {
 
   Future<double> getValue() async {
     await update();
-    return _currentPrice;
+    return _currentPrice * _quantity;
   }
 
   Future<double> getEarnings() async {

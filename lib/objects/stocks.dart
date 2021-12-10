@@ -16,6 +16,15 @@ class Stocks {
     '_followedStocks' : _followedStocks,
   };
 
+  bool ownStock(ticker) {
+    for (Stock stock in this._ownedStocks) {
+      if (stock.ticker == ticker) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   void buy(Stock stock) {
     _ownedStocks.add(stock);
   }

@@ -12,6 +12,10 @@ class User extends Object {
     _wallet = new Wallet.empty();
   }
 
+  bool ownStock(ticker) {
+    return _wallet.ownStock(ticker);
+  }
+
   Wallet getWallet() {return _wallet;}
 
   void buyStock(Stock stock) {

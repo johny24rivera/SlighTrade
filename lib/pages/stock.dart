@@ -74,16 +74,9 @@ class _StockPriceViewState extends State<StockPriceView> {
   late double? stockPrice = widget.price.currentPrice;
   void buyStock() {
 
-    print("first check");
     int quantity = int.parse(controller.text);
-    print("Second check");
     double price = stockPrice! * quantity;
-    print("third check");
     double funds = widget.user.getWallet().getAvailableFunds();
-    print("fourth check");
-    if (quantity == 0) {
-      print("Something went wrong");
-    }
 
     if (price > funds) {
       print("Generate Alert");
@@ -104,12 +97,25 @@ class _StockPriceViewState extends State<StockPriceView> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.user.ownStock(widget.ticker) == false) {
+      return Column(
+        children: <Widget>[
+          Text(widget.price.currentPrice.toString()),
+          generateNumberField(controller),
+          generateButton(buyStock, "Buy Stock"),
+        ]
+      );
+    }
+
     return Column(
-      children: <Widget>[
-        Text(widget.price.currentPrice.toString()),
-        generateNumberField(controller),
-        generateButton(buyStock, "Buy Stock"),
-      ]
-    );
+        children: <Widget>[
+          Text(widget.price.currentPrice.toString()),
+          generateNumberField(controller),
+          generateButton(buyStock, "Buy Stock"),
+          generateButton(buyStock, "Sell Stock"),
+        ]
+      );
   }
+
+
 }

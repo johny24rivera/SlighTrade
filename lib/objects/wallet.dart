@@ -30,6 +30,10 @@ class Wallet extends Object {
     return funds.getFunds();
   }
 
+  bool ownStock(ticker) {
+    return stocks.ownStock(ticker);
+  }
+
   Future<double> getEarnings() async {
     this.earnings = await stocks.getEarnings();
     return earnings;
