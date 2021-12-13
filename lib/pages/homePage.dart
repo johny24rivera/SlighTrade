@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:slightrade/elements.dart';
 import 'package:slightrade/objects/wallet.dart';
@@ -17,6 +19,9 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    var jsonUser = jsonEncode(widget.user.toJson());
+    print(jsonUser);
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Home"),

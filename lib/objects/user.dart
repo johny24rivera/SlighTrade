@@ -22,6 +22,10 @@ class User extends Object {
     _wallet.buyStock(stock);
   }
 
+  void sellStock(Stock stock) {
+    _wallet.sellStock(stock);
+  }
+
   Map<String,dynamic> toJson() => {
     '_username': _username,
     '_email' : _email,

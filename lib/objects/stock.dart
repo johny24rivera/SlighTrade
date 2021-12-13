@@ -6,7 +6,6 @@ class Stock {
   late double _currentPrice;
   late double _purchasePrice;
   late int _quantity;
-  bool _changed = false;
 
   Stock(this._name, this._ticker, this._currentPrice, this._purchasePrice, this._quantity);
   Stock.withoutQuantity(this._name, this._ticker, this._currentPrice, this._purchasePrice);
@@ -14,13 +13,17 @@ class Stock {
     this._currentPrice = this._purchasePrice;
   }
   
-  get changed => _changed;
   get quantity => _quantity;
+  get currentPrice => _currentPrice;
 
   get ticker => _ticker;
 
   String getName() {
     return _name;
+  }
+
+  void setQuantity(int quantity) {
+    this._quantity = quantity;
   }
 
   double getPurchasePrice() {
@@ -43,7 +46,15 @@ class Stock {
     yfin.getPrice(stockInfo: info)
       .then((value) {
         _currentPrice = value.currentPrice!;
-        _changed = true;
       });
   }
+
+  Map<String,dynamic> toJson() => {
+    '_name' : _name,
+    '_ticker' : _ticker,
+    '_currentPrice': _currentPrice,
+    '_purchasePrice' : _purchasePrice,
+    '_quantity' : _quantity,
+  };
 }
+

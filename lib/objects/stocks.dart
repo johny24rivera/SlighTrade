@@ -29,10 +29,32 @@ class Stocks {
     _ownedStocks.add(stock);
   }
 
-  Future<double> sell(Stock stock) async {
-    _ownedStocks.remove(stock);
-    await stock.update();
-    return stock.getValue();
+  void sell(Stock stock) async {
+    var stockIndeces = <int>[];
+    for (int i = 0; i < this._ownedStocks.length; i++) {
+      if (this._ownedStocks[i].ticker == stock.ticker) {
+        stockIndeces.add(i);
+      }
+    }
+
+    int i = stockIndeces.length - 1;
+    while (stock.quantity != 0) {
+      int index = stockIndeces[i];
+      int inputQuantity = stock.quantity;
+      int ownedQuantity = this._ownedStocks[index].quantity;
+
+      if (inputQuantity > ownedQuantity) {
+        stock.setQuantity(inputQuantity - ownedQuantity);
+        this._ownedStocks.removeAt(index);
+        i -= 1;
+      } else if (inputQuantity < ownedQuantity) {
+        this._ownedStocks[index].setQuantity(ownedQuantity - inputQuantity);
+        return;
+      } else {
+        this._ownedStocks.removeAt(index);
+        return;
+      }
+    }
   }
 
   void follow(Stock stock) {

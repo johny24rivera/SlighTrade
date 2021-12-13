@@ -95,6 +95,20 @@ class _StockPriceViewState extends State<StockPriceView> {
     }
   }
 
+  void sellStock() {
+    int quantity = int.parse(controller.text);
+
+    Stock stock = new Stock.withoutCurrentPrice(widget.ticker, widget.ticker, stockPrice!, quantity);
+    widget.user.sellStock(stock);
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => HomePage(user: widget.user)
+          // builder: (context) => HomePage()
+        )
+      );
+  }
+
   @override
   Widget build(BuildContext context) {
     if (widget.user.ownStock(widget.ticker) == false) {
@@ -112,7 +126,7 @@ class _StockPriceViewState extends State<StockPriceView> {
           Text(widget.price.currentPrice.toString()),
           generateNumberField(controller),
           generateButton(buyStock, "Buy Stock"),
-          generateButton(buyStock, "Sell Stock"),
+          generateButton(sellStock, "Sell Stock"),
         ]
       );
   }

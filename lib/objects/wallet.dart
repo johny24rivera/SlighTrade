@@ -52,6 +52,12 @@ class Wallet extends Object {
     stocks.buy(stock);
   }
 
+  void sellStock(Stock stock) {
+    double sellPrice = stock.quantity * stock.currentPrice;
+    funds.sellStocks(sellPrice);
+    stocks.sell(stock);
+  }
+
   List<Stock> getStocks() {
     return stocks.getOwnedStocks();
   }
@@ -68,6 +74,7 @@ class Wallet extends Object {
   Map<String,dynamic> toJson() => {
     'portfolio' : portfolio,
     'funds' : funds.toJson(),
-    'stocks' : stocks.toJson()
+    'stocks' : stocks.toJson(),
+    'earnings' : earnings,
   };
 }
