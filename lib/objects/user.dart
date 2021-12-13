@@ -6,10 +6,16 @@ class User extends Object {
   late String _email;
   late String _password;
   late Wallet _wallet;
+  String _id = '';
 
   User(this._username, this._email, this._password, this._wallet);
   User.withoutWallet(this._username, this._email, this._password) {
     _wallet = new Wallet.empty();
+  }
+
+  get id => _id;
+  void setId(String id) {
+    this._id = id;
   }
 
   bool ownStock(ticker) {
@@ -30,6 +36,7 @@ class User extends Object {
     '_username': _username,
     '_email' : _email,
     '_password' : _password,
-    '_wallet' : _wallet.toJson()
+    '_wallet' : _wallet.toJson(),
+    '_id' : _id
   };
 }

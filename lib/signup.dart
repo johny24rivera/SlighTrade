@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:slightrade/helpful-methods/formValidation.dart';
 import 'package:slightrade/login.dart';
 import 'package:slightrade/elements.dart';
-// import 'package:slightrade/pages/homePage.dart';
 import 'package:slightrade/objects/user.dart';
 import 'package:slightrade/pages/setup_pages/wallet_setup.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SignupPage extends StatelessWidget {
   const SignupPage({ Key? key }) : super(key: key);
@@ -34,6 +35,8 @@ class _BodyState extends State<Body> {
   TextEditingController emailController = new TextEditingController();
   TextEditingController passwordController = new TextEditingController();
   TextEditingController confirmPasswordController = new TextEditingController();
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  CollectionReference users = FirebaseFirestore.instance.collection('users');
   late String username;
   late String email;
   late String password;
@@ -77,13 +80,22 @@ class _BodyState extends State<Body> {
       String jsonMember = jsonEncode(member.toJson());
       print(jsonMember);
 
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => WalletPage(user: member)
-          // builder: (context) => HomePage()
+      users.add(member.toJson())
+        .then((value) {
+          value.update({'_id':value.id});
+          member.setId(value.id);
+          print("User Added");
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => WalletPage(user: member)
+              // builder: (context) => HomePage()
+            )
+          );
+          }
         )
-      );
+        .catchError((error) => print("Failed to add user: $error"));
+
     }
   }
 

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:slightrade/pages/stock.dart';
@@ -134,4 +135,11 @@ IconButton generateMenuButton() {
       
     },
   );
+}
+
+void updateUser(User user) {
+  FirebaseFirestore.instance
+    .collection('users')
+    .doc(user.id)
+    .set(user.toJson());
 }

@@ -21,6 +21,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     var jsonUser = jsonEncode(widget.user.toJson());
     print(jsonUser);
+    updateUser(widget.user);
 
     return Scaffold(
       appBar: AppBar(
