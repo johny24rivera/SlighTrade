@@ -35,14 +35,14 @@ class _StockPageState extends State<StockPage> {
             Container(
               padding: EdgeInsets.all(20),
               child: FutureBuilder(
-                future: Future.wait([yfin.getPrice(stockInfo: widget.info)]).catchError((onError) => print(onError.toString())),
-                builder: (BuildContext context, AsyncSnapshot<List<StockQuote>> snapshot) {
+                future: Future.value(yfin.getPrice(stockInfo: widget.info)).catchError((onError) => print(onError.toString())),
+                builder: (BuildContext context, AsyncSnapshot<StockQuote> snapshot) {
                   print("check stuff");
                   print(snapshot.toString());
-                  if (snapshot.data?[0] != null) {
-                    stockPrice = snapshot.data![0].currentPrice; 
+                  if (snapshot.data != null) {
+                    stockPrice = snapshot.data!.currentPrice;
                     return (stockPrice != null) ? StockPriceView(
-                      price: snapshot.data![0], 
+                      price: snapshot.data!, 
                       user: widget.user,
                       ticker: ticker) : 
                       Text("Stock not found");
@@ -111,11 +111,37 @@ class _StockPriceViewState extends State<StockPriceView> {
       );
   }
 
+  void follow() {
+    Stock followed = new Stock.follow(widget.ticker, widget.ticker);
+    widget.user.follow(followed);
+  }
+
+  void unfollow() {
+    widget.user.unfollow(widget.ticker);
+  }
+
+  void onPressed() {
+    setState(() {
+      if (widget.user.followStock(widget.ticker)) {
+        unfollow();
+      } else {
+        follow();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    IconButton follow = new IconButton(
+      onPressed: onPressed,
+      icon: widget.user.followStock(widget.ticker) 
+        ? Icon(Icons.favorite) : Icon(Icons.favorite_border)
+    );
+
     if (widget.user.ownStock(widget.ticker) == false) {
       return Column(
         children: <Widget>[
+          follow,
           Text(widget.price.currentPrice.toString()),
           generateNumberField(controller),
           generateButton(buyStock, "Buy Stock"),
@@ -125,6 +151,7 @@ class _StockPriceViewState extends State<StockPriceView> {
 
     return Column(
         children: <Widget>[
+          follow,
           Text(widget.price.currentPrice.toString()),
           generateNumberField(controller),
           generateButton(buyStock, "Buy Stock"),

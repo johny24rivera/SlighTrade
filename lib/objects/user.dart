@@ -14,6 +14,13 @@ class User extends Object {
     _wallet = new Wallet.empty();
   }
 
+  User.empty() {
+    this._wallet = new Wallet.empty();
+    this._username = '';
+    this._email = '';
+    this._password = '';
+  }
+
   get id => _id;
   void setId(String id) {
     this._id = id;
@@ -21,6 +28,18 @@ class User extends Object {
 
   bool ownStock(ticker) {
     return _wallet.ownStock(ticker);
+  }
+
+  bool followStock(ticker) {
+    return _wallet.followStock(ticker);
+  }
+
+  void follow(Stock stock) {
+    _wallet.follow(stock);
+  }
+
+  void unfollow(ticker) {
+    _wallet.unfollow(ticker);
   }
 
   Wallet getWallet() {return _wallet;}
@@ -46,4 +65,12 @@ class User extends Object {
     '_wallet' : _wallet.toJson(),
     '_id' : _id
   };
+
+  User.fromJson(Map<String, dynamic> json) {
+    this._username = json["_username"];
+    this._email = json["_email"];
+    this._password = json["_password"];
+    this._wallet = new Wallet.fromJson(json["_wallet"]);
+    this._id = json["_id"];
+  }
 }

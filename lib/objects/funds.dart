@@ -61,4 +61,9 @@ class Funds {
     '_initialFunds' :  _initialFunds,
     '_availableFunds' : _availableFunds
   };
+
+  Funds.fromJson(Map<String, dynamic> json) {
+    this._initialFunds = json["_initialFunds"];
+    this._availableFunds = json["_availableFunds"];
+  }
 }

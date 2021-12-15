@@ -1,8 +1,8 @@
 import 'package:slightrade/objects/stock.dart';
 
 class Stocks {
-  List<Stock> _ownedStocks = [];
-  List<Stock> _followedStocks = [];
+  List<Stock> _ownedStocks = <Stock>[];
+  List<Stock> _followedStocks = <Stock>[];
 
   Stocks();
 
@@ -14,14 +14,34 @@ class Stocks {
 
   Map<String,dynamic> toJson() {
     List<Map>? owned =
-        this._ownedStocks != null ? this._ownedStocks.map((i) => i.toJson()).toList() : null;
+        this._ownedStocks != [] ? this._ownedStocks.map((i) => i.toJson()).toList() : [];
     List<Map>? followed =
-        this._followedStocks != null ? this._followedStocks.map((i) => i.toJson()).toList() : null;
+        this._followedStocks != [] ? this._followedStocks.map((i) => i.toJson()).toList() : [];
 
     return {
     '_ownedStocks' : owned,
     '_followedStocks' : followed,
     };
+  }
+
+  Stocks.fromJson(Map<String, dynamic> json) {
+    print(json["_ownedStocks"]);
+    print(json["_followedStocks"]);
+    List<Stock> owned = <Stock>[];
+    for(var stock in json["_ownedStocks"]) {
+      Stock newStock = Stock.fromJson(stock);
+      owned.add(newStock);
+    }
+
+    print("First part worked");
+    List<Stock> followed = <Stock>[];
+    for(var stock in json["_followedStocks"]) {
+      Stock newStock = Stock.fromJson(stock);
+      followed.add(newStock);
+    }
+
+    this._ownedStocks = owned;
+    this._followedStocks = followed;
   }
 
   bool ownStock(ticker) {
@@ -31,6 +51,24 @@ class Stocks {
       }
     }
     return false;
+  }
+
+  bool followStock(ticker) {
+    for (Stock stock in this._followedStocks) {
+      if (stock.ticker == ticker) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  void unfollow(ticker) {
+    for (Stock stock in this._followedStocks) {
+      if (stock.ticker == ticker) {
+        this._followedStocks.remove(stock);
+        return;
+      }
+    }
   }
 
   void buy(Stock stock) {
@@ -67,10 +105,6 @@ class Stocks {
 
   void follow(Stock stock) {
     _followedStocks.add(stock);
-  }
-
-  void unfollow(Stock stock) {
-    _followedStocks.remove(stock);
   }
 
   Future<double> getValue() async {

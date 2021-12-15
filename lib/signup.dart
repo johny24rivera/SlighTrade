@@ -49,17 +49,38 @@ class _BodyState extends State<Body> {
     return false;
   }
 
-  bool emailUsed(email) {
-    final document = FirebaseFirestore.instance
+  Future<bool> emailUsed(String email) async {
+    bool exists = true;
+    await FirebaseFirestore.instance
       .collection('users')
       .where('_email', isEqualTo: email)
       .get()
-      .then((value) {return true;});
-    
-    return false;
+      .then((value) {
+        print(email);
+       
+        exists = value.docs.isNotEmpty;
+      }
+    );
+    print("hello");
+    return exists;
   }
 
-  bool verifyUserData(email, username) {
+  Future<bool> usernameUsed(String username) async {
+    bool exists = true;
+    await FirebaseFirestore.instance
+      .collection('users')
+      .where('_username', isEqualTo: username)
+      .get()
+      .then((value) {
+        print(username);
+        exists = value.docs.isNotEmpty;
+      }
+    );
+
+    return exists;
+  }
+
+  Future<bool> verifyUserData(email, username) async {
     // make sure username is not used
     // make sure is not used;
     // verify email is valid
@@ -74,24 +95,27 @@ class _BodyState extends State<Body> {
       return false;
     }
 
-    if (emailUsed(email)){
+    if (await emailUsed(email)){
       generateAlert("Invalid Input", "Email is already in use", context);
       return false;
     }
 
-
+    if (await usernameUsed(username)){
+      generateAlert("Invalid Input", "Username is already in use", context);
+      return false;
+    }
 
     return true;
   }
 
-  void click() {
+  void click() async {
     this.username = usernameController.text;
     this.email = emailController.text;
     this.password = passwordController.text;
     this.confirmPassword = confirmPasswordController.text;
 
     // Go to Home page if all information is correct
-    if (verifyUserData(email, username)) {
+    if (await verifyUserData(email, username)) {
       this.password = hashPassword(password);
       User member = new User.withoutWallet(username, email, password);
       String jsonMember = jsonEncode(member.toJson());

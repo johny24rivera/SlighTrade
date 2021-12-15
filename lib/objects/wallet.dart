@@ -34,6 +34,18 @@ class Wallet extends Object {
     return stocks.ownStock(ticker);
   }
 
+  bool followStock(ticker) {
+    return stocks.followStock(ticker);
+  }
+
+  void follow(Stock stock) {
+    stocks.follow(stock);
+  }
+
+  void unfollow(ticker) {
+    stocks.unfollow(ticker);
+  }
+
   Future<double> getEarnings() async {
     this.earnings = await stocks.getEarnings();
     return earnings;
@@ -77,4 +89,11 @@ class Wallet extends Object {
     'stocks' : stocks.toJson(),
     'earnings' : earnings,
   };
+
+  Wallet.fromJson(Map<String, dynamic> json) {
+    this.portfolio = json["portfolio"];
+    this.funds = Funds.fromJson(json['funds']);
+    this.stocks = Stocks.fromJson(json['stocks']);
+    this.earnings = json["earnings"];
+  }
 }

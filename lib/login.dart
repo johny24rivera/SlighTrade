@@ -1,7 +1,13 @@
+import 'dart:convert';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:slightrade/elements.dart';
+import 'package:slightrade/helpful-methods/formValidation.dart';
+import 'package:slightrade/pages/homePage.dart';
 import 'package:slightrade/signup.dart';
 import 'myHomePage.dart';
+import 'objects/user.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({ Key? key }) : super(key: key);
@@ -30,18 +36,70 @@ class _BodyState extends State<Body> {
   late String user;
   late String password;
 
-  void click() {
+  Future<String> verifyUser(String user, String password) async {
+    print("verify User called");
+    String docId = '';
+    await FirebaseFirestore.instance
+    .collection('users')
+    .where('_username', isEqualTo: user)
+    .get()
+    .then((value) {
+      if (value.docs.isNotEmpty) {
+        docId = value.docs[0].id;
+      }
+    });
+    print(docId);
+
+    await FirebaseFirestore.instance
+    .collection('users')
+    .where('_email', isEqualTo: user)
+    .get()
+    .then((value) {
+      if (value.docs.isNotEmpty) {
+        docId = value.docs[0].id;
+      }
+    });
+    print(docId);
+
+    return docId;
+  }
+
+  void click() async {
     this.user = userController.text;
     this.password = passwordController.text;
-    // hash password (MD5)
-    //Check Credentials
+    this.password = hashPassword(password);
+    String docId = await verifyUser(user, password);
+    User member = new User.empty();
+    String passwordCheck = '';
+    
+    if (docId != '') {
+      await FirebaseFirestore.instance
+        .collection('users')
+        .doc(docId)
+        .get()
+        .then((value) {
+          print(value.data());
+          member = new User.fromJson(value.data()!);
+          passwordCheck = value.data()!['_password'];
+          print(passwordCheck);
+        });
+    } else {
+      generateAlert("User not found", "Email or username is invalid", context);
+      return;
+    }
 
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => MyHomePage(title: user)
-      )
-    );
+    if (password == passwordCheck) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => HomePage(user: member)
+        )
+      );
+    } else {
+      generateAlert("Entry not valid", "password is invalid", context);
+      return;
+    }
+    
   }
 
   void signup() {

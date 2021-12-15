@@ -12,6 +12,11 @@ class Stock {
   Stock.withoutCurrentPrice(this._name, this._ticker, this._purchasePrice, this._quantity) {
     this._currentPrice = this._purchasePrice;
   }
+  Stock.follow(this._name, this._ticker) {
+    update();
+    this._purchasePrice = 0;
+    this._quantity = 0;
+  }
   
   get quantity => _quantity;
   get currentPrice => _currentPrice;
@@ -56,5 +61,14 @@ class Stock {
     '_purchasePrice' : _purchasePrice,
     '_quantity' : _quantity,
   };
+
+  Stock.fromJson(Map<String, dynamic> json) {
+    print("Enter where I wanted to");
+    this._name = json['_name'];
+    this._ticker = json['_ticker'];
+    this._currentPrice = json['_currentPrice'];
+    this._purchasePrice = json['_purchasePrice'];
+    this._quantity = json['_quantity'];
+  }
 }
 
