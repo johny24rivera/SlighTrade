@@ -7,14 +7,22 @@ class Stocks {
   Stocks();
 
   Stocks.withOtherStock(Stocks stocks) {
+
     this._ownedStocks = stocks._ownedStocks;
     this._followedStocks = stocks._followedStocks;
   }
 
-  Map<String,dynamic> toJson() => {
-    '_ownedStocks' : _ownedStocks,
-    '_followedStocks' : _followedStocks,
-  };
+  Map<String,dynamic> toJson() {
+    List<Map>? owned =
+        this._ownedStocks != null ? this._ownedStocks.map((i) => i.toJson()).toList() : null;
+    List<Map>? followed =
+        this._followedStocks != null ? this._followedStocks.map((i) => i.toJson()).toList() : null;
+
+    return {
+    '_ownedStocks' : owned,
+    '_followedStocks' : followed,
+    };
+  }
 
   bool ownStock(ticker) {
     for (Stock stock in this._ownedStocks) {

@@ -5,7 +5,6 @@ import 'package:slightrade/objects/user.dart';
 import 'package:slightrade/pages/homePage.dart';
 import 'package:yahoofin/yahoofin.dart';
 
-
 class StockPage extends StatefulWidget {
   const StockPage({ Key? key, required this.info, required this.user }) : super(key: key);
 
@@ -22,6 +21,7 @@ class _StockPageState extends State<StockPage> {
 
   @override
   Widget build(BuildContext context) {
+    print(ticker);
     return Scaffold(
       appBar: AppBar(
         title: Text("Stock"),
@@ -35,8 +35,10 @@ class _StockPageState extends State<StockPage> {
             Container(
               padding: EdgeInsets.all(20),
               child: FutureBuilder(
-                future: Future.wait([yfin.getPrice(stockInfo: widget.info)]),
+                future: Future.wait([yfin.getPrice(stockInfo: widget.info)]).catchError((onError) => print(onError.toString())),
                 builder: (BuildContext context, AsyncSnapshot<List<StockQuote>> snapshot) {
+                  print("check stuff");
+                  print(snapshot.toString());
                   if (snapshot.data?[0] != null) {
                     stockPrice = snapshot.data![0].currentPrice; 
                     return (stockPrice != null) ? StockPriceView(

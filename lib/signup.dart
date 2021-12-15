@@ -49,7 +49,17 @@ class _BodyState extends State<Body> {
     return false;
   }
 
-  bool verifyUserData() {
+  bool emailUsed(email) {
+    final document = FirebaseFirestore.instance
+      .collection('users')
+      .where('_email', isEqualTo: email)
+      .get()
+      .then((value) {return true;});
+    
+    return false;
+  }
+
+  bool verifyUserData(email, username) {
     // make sure username is not used
     // make sure is not used;
     // verify email is valid
@@ -64,6 +74,13 @@ class _BodyState extends State<Body> {
       return false;
     }
 
+    if (emailUsed(email)){
+      generateAlert("Invalid Input", "Email is already in use", context);
+      return false;
+    }
+
+
+
     return true;
   }
 
@@ -74,7 +91,7 @@ class _BodyState extends State<Body> {
     this.confirmPassword = confirmPasswordController.text;
 
     // Go to Home page if all information is correct
-    if (verifyUserData()) {
+    if (verifyUserData(email, username)) {
       this.password = hashPassword(password);
       User member = new User.withoutWallet(username, email, password);
       String jsonMember = jsonEncode(member.toJson());

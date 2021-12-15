@@ -117,8 +117,11 @@ TextField generateSearchBar(BuildContext context, User user) {
       ),
     ),
     onSubmitted: (search) {
+      print(search);
       final yfin = YahooFin();
+
       StockInfo info = yfin.getStockInfo(ticker: search);
+      print("Navigate to page");
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => StockPage(info: info, user: user))

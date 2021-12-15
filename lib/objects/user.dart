@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:slightrade/objects/stock.dart';
 import 'package:slightrade/objects/wallet.dart';
 
@@ -26,10 +27,16 @@ class User extends Object {
 
   void buyStock(Stock stock) {
     _wallet.buyStock(stock);
+    FirebaseFirestore.instance
+    .collection('users')
+    .doc(_id)
+    .set(toJson())
+    .then((value) => print("updated user"));
   }
 
   void sellStock(Stock stock) {
     _wallet.sellStock(stock);
+
   }
 
   Map<String,dynamic> toJson() => {
