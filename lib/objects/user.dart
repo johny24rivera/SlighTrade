@@ -26,6 +26,10 @@ class User extends Object {
     this._id = id;
   }
 
+  Future<void> updateAllStocks() async {
+    await _wallet.update();
+  }
+
   bool ownStock(ticker) {
     return _wallet.ownStock(ticker);
   }

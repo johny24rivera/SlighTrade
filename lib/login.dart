@@ -65,7 +65,7 @@ class _BodyState extends State<Body> {
   }
 
   void click() async {
-    this.user = userController.text;
+    this.user = sanitize(userController.text);
     this.password = passwordController.text;
     this.password = hashPassword(password);
     String docId = await verifyUser(user, password);

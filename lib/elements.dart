@@ -146,3 +146,7 @@ void updateUser(User user) {
     .doc(user.id)
     .set(user.toJson());
 }
+
+String sanitize(String input) {
+  return input.toLowerCase().trim();
+}

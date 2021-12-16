@@ -109,8 +109,8 @@ class _BodyState extends State<Body> {
   }
 
   void click() async {
-    this.username = usernameController.text;
-    this.email = emailController.text;
+    this.username = sanitize(usernameController.text);
+    this.email = sanitize(emailController.text);
     this.password = passwordController.text;
     this.confirmPassword = confirmPasswordController.text;
 

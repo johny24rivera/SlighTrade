@@ -20,6 +20,7 @@ class Stock {
   
   get quantity => _quantity;
   get currentPrice => _currentPrice;
+  get earnings => (_currentPrice - _purchasePrice);
 
   get ticker => _ticker;
 
@@ -42,7 +43,7 @@ class Stock {
 
   Future<double> getEarnings() async {
     await update();
-    return _quantity * (_currentPrice - _purchasePrice);
+    return _quantity * ((_currentPrice - _purchasePrice) * quantity );
   }
 
   Future update() async {
